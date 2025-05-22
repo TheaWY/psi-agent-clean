@@ -47,7 +47,7 @@ def run_planning_page(suffix_inputs: dict, filtered_df: pd.DataFrame, log):
 2. **Main SP 수립 기준**  
    - Main SP는 자재 제약·CAPA제약·BOD 기준정보를 반영한 선적 계획입니다.
    - BOD Start Date는 **2025-05-01**로 설정되어, 이후 제약을 반영해 **5/26주차**에 일괄 수립됩니다. 
-   - 앞서 수립된 **2025-05-01(수량:1150) + 2025-05-26 (200)**을 2025-05-26주차에 합산하여 수량 1350이 수립됩니다. 
+   - 앞서 수립된 **2025-05-01 수량:1150 + 2025-05-26 수량 200**을 2025-05-26주차에 합산하여 수량 1350이 수립됩니다. 
 
 ✅ **결론 요약:**
 Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 실행 계획이므로
@@ -91,7 +91,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
             "GPLM 시스템의 R&D PMS 메뉴에 등록된 개발일정이 GSCP Item BOD 페이지로 I/F되어 Item BOD의 BOD Start Date로 인식됩니다."
         )
         log("Planning Agent: BOD Start Date 설명 완료")
-        
+
                 # ▶ Item_BOD 시트 로드 & 필터
         try:
             df_bod = pd.read_excel(BOD_FILE)
