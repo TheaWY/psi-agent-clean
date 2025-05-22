@@ -94,23 +94,20 @@ if uploaded:
     # 모델 키 입력
     log("Supervisor Agent: 모델 필터링 단계 진입")
     st.markdown("### 🔑 분석할 모델 키 값을 입력해주세요:")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        div    = st.text_input("Division")
-        region = st.text_input("Region")
-    with c2:
-        subs      = st.text_input("Subsidiary")
+    col1, col2, col3, col4 = st.columns(4, gap="large")
+    with col1:
+        div       = st.text_input("Division")
+    with col2:
         from_site = st.text_input("Rep From Site")
-    with c3:
-        to_site = st.text_input("Site")
-        suffix  = st.text_input("Mapping Model.Suffix")
+    with col3:
+        to_site   = st.text_input("Site")
+    with col4:
+        suffix    = st.text_input("Mapping Model.Suffix")
 
     if st.button("🔍 모델 확인"):
         log("Supervisor Agent → Model Agent: 모델 확인 요청")
         keys = {
             "Division": div,
-            "Region": region,
-            "Subsidiary": subs,
             "Rep From Site": from_site,
             "Site": to_site,
             "Mapping Model.Suffix": suffix,
@@ -123,7 +120,7 @@ if uploaded:
             st.session_state.model_selected = keys
             st.session_state.filtered_df   = match
             st.success("✅ 해당 모델이 확인되었습니다.")
-            st.dataframe(match.head(3), use_container_width=True)
+            st.dataframe(match, use_container_width=True)
             log("Model Agent: 모델 필터링 완료, 결과 반환")
         else:
             st.error("❌ 일치하는 모델을 찾을 수 없습니다.")
@@ -161,7 +158,6 @@ if mode == "term":
 
 elif mode == "perf":
     log("Performance Agent: 실적 분석 처리 시작")
-    # ← 여기에 log 인자 추가!
     run_performance_page(
         st.session_state.model_selected,
         st.session_state.filtered_df,
