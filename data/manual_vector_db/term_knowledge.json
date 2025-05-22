@@ -1,0 +1,15 @@
+[
+    {
+      "term": "SP",
+      "definition": "SP (Supply Plan)는 수요, 재고, 자재 가용성, 생산 제약 등을 고려하여 수립한 공급 계획입니다."
+    },
+    {
+      "term": "Max SR",
+      "definition": "Max SR은 Forecast와 BOD L/T를 기반으로 생성된 최대 공급 요청 수치입니다. 자재나 CAPA 제약을 고려하지 않습니다."
+    },
+    {
+      "term": "Final PSI",
+      "definition": "Final PSI는 최종 공급 가능 수치를 나타냅니다. 실재고, 입고, 생산 계획, 제약 등을 반영한 수치입니다."
+    }
+  ]
+  

@@ -1,0 +1,62 @@
+[
+  {
+    "question": "BOD를 연결하지 않으면 공급 계획은 어떻게 되나요?",
+    "score": 0.2731342315673828,
+    "is_confident": false,
+    "doc_snippet": "Site 생성 후, Site에 Item을 Assign한 다음  BOD 연결 하지 않으면, 공급지 정보가 연결 되지 않으므로, 공급 계획이 생성되지 않는다."
+  },
+  {
+    "question": "Frozen Period란 무엇인가요?",
+    "score": 0.5910317301750183,
+    "is_confident": true,
+    "doc_snippet": "Frozen Period"
+  },
+  {
+    "question": "Transit Time은 어떤 의미인가요?",
+    "score": 0.5326554477214813,
+    "is_confident": true,
+    "doc_snippet": "Transit Time"
+  },
+  {
+    "question": "Site와 Item을 Assign한 뒤 해야 할 일은 무엇인가요?",
+    "score": 0.44879668951034546,
+    "is_confident": true,
+    "doc_snippet": "Site Define 후, Site에 Item을 Assign 한 다음,  공급지 정보와 판매지 정보를 연결 한다."
+  },
+  {
+    "question": "GSCP와 PSI는 어떤 관계인가요?",
+    "score": 0.5644729137420654,
+    "is_confident": true,
+    "doc_snippet": "GSCP에서 PSI 관리 단위."
+  },
+  {
+    "question": "PSI에서 Forecast와 Plan의 차이는 무엇인가요?",
+    "score": 0.21075928211212158,
+    "is_confident": false,
+    "doc_snippet": "1. 판매법인의 Forecast에 대한 Allocation을 알 수 있는 PSI 정보는? (1)"
+  },
+  {
+    "question": "Sales PSI, Shipment PSI, Production PSI는 각각 어떤 역할인가요?",
+    "score": 0.624612033367157,
+    "is_confident": true,
+    "doc_snippet": "GSCP의 Output Data인 Sales PSI, Shipment PSI, Production PSI에 대하여 설명한다."
+  },
+  {
+    "question": "Item과 Site를 연결하기 위해 어떤 정보가 필요한가요?",
+    "score": 0.3083016872406006,
+    "is_confident": true,
+    "doc_snippet": "Site Define 후, Site에 Item을 Assign 한 다음,  공급지 정보와 판매지 정보를 연결 한다."
+  },
+  {
+    "question": "왜 BOD 연결이 PSI 계획 생성에 중요할까요?",
+    "score": 0.15972447395324707,
+    "is_confident": false,
+    "doc_snippet": "BOD 연결"
+  },
+  {
+    "question": "GSCP에서 Planning Data와 Dynamic Data는 어떤 차이가 있나요?",
+    "score": 0.464977502822876,
+    "is_confident": true,
+    "doc_snippet": "GSCP의 Input Data중 하나인 Dynamic Data에 대하여 설명한다."
+  }
+]

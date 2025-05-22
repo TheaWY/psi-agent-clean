@@ -1,0 +1,163 @@
+[
+  {
+    "id": "psi_manual_f4371d4b-b8a6-47f1-944b-d85f61dc656c",
+    "text": "PSI 문의 유형은 주차 불일치, 재고 과다, 수요/공급 불일치, 제약 반영 오류, BOM 오류 등으로 나뉘며, 각 유형별 대응 논리가 다르다.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_69b2bc23-52f4-4962-89de-1f17128ab755",
+    "text": "Max SR과 Main SP가 입력된 주차 차이에 대한 문의가 지속적으로 발생하고 있으며, 주요 원인은 BOD Lead Time, CAPA 제약 반영 여부, Forecast 수립 방식, 안전재고 설정 등이다.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_9b25d5df-e6a6-4b81-8e9a-ac16a9068434",
+    "text": "Main SP는 자재 및 생산 제약이 반영된 일정으로, 실제 공급 가능한 타이밍을 기준으로 한다. 반면 Max SR은 수요 기반 계획으로 제약을 무시하고 BOD Lead Time을 기반으로 계산된다.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_2fbbaf7f-c1d4-4179-8901-0cf79cdc52fa",
+    "text": "Max SR은 Demand + BOD L/T + 안전재고를 기준으로 설정되며, Item BOD Start Date나 CAPA 그리고 자재 여부는 고려하지 않는다. 따라서 주차가 Main SP보다 과거 날짜에 반영 될 수 있다.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_d1adc5c0-ecf0-47a3-be7e-24cc6f79a0db",
+    "text": "Final PSI의 Sales Allocation이 Demand보다 높게 잡히는 경우는 Delay Allocation 설정, 우선순위 재조정, 특정 Project Code 강제 배정 등으로 설명 가능하다.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_5c2f008b-465a-4ae3-ac74-4121a8396a24",
+    "text": "PSI 데이터는 주차 단위로 관리되며, Forecast와 Allocation 간 시간 차, 수요 변동성, 정책 반영 속도 차이로 인해 오차가 발생할 수 있다.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_14586e46-451c-4994-a5d5-21ab23ce5554",
+    "text": "Project Code 미일치로 인해 Cap은 잡혔지만 ERP에 PO의 자동생성이 실패하는 경우가 있음. GERP/GSCP 간 데이터 정합성 이슈로 자주 발생함.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_0c11bdd7-2186-47c3-ba6f-fe1d5d037e7c",
+    "text": "특정 고객사 공급 우선순위(Priority)가 설정된 경우, 동일한 재고라도 다른 고객의 Allocation 기준으로 먼저 배정될 수 있으며 이는 주차 차이를 야기함.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "psi_manual_c3f9bd07-8504-4816-8579-5307b535f649",
+    "text": "Manual PO 승인 실패는 실제 CAP 확보 여부보다 Project Code 일치 여부, Item Group 매핑 기준 등이 더 중요하게 작용함.",
+    "slide_index": 0,
+    "source": "manual_insight",
+    "keywords": []
+  },
+  {
+    "id": "c3e8b7d2-4f9a-4a1e-9f84-2b7d1a5c6e4f",
+    "text": "해당 site는 delay allocation 로직이 설정되어 있습니다. Delay allocation이란, 공급계획에 지연 수립되어서 Shortage 처리가 되지 않고, 다음 sales allocation에 할당되는 기능입니다.",
+    "source": "manual_insight",
+    "keywords": [
+      "delay allocation",
+      "지연 수립",
+      "Shortage",
+      "Sales Allocation",
+      "공급 계획"
+    ]
+  },
+  {
+    "id": "a47f9b3e-2c59-4e7d-9c8a-1f2b3d4e5f60",
+    "text": "GPLM 시스템의 R&D PMS 메뉴에 개발일정이 등록되어 있고, 해당 값은 GSCP의 I/F되어 Item BOD의 BOD Start Date로 인식합니다",
+    "source": "manual_insight",
+    "keywords": [
+      "GPLM",
+      "R&D PMS",
+      "개발일정",
+      "GSCP",
+      "I/F",
+      "Item BOD",
+      "BOD Start Date"
+    ]
+  },
+  
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0001",
+      "text": "Global Sales & Purchase에서는 Local PSI와 Global PSI로 구분하여 각기 다른 계획 수립 방식을 사용합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Global Sales & Purchase","Local PSI","Global PSI"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0002",
+      "text": "Local PSI는 판매 법인 단위로만 S(판매 계획)와 I(재고 계획)를 관리합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Local PSI","판매 법인","S","I"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0003",
+      "text": "Local PSI는 목표 P(Purchase 희망량)를 수요(Demand)로 몰딩에 반영합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Local PSI","Purchase 희망량","Demand"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0004",
+      "text": "Local PSI는 별도의 계획 없이 목표 물동량만을 기준으로 PSI 정보를 생성합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Local PSI","물동량","PSI 정보"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0005",
+      "text": "Local PSI는 법인의 물동 운영 자율성이 높아 전사 차원의 재고나 수요 정보가 반영되지 않습니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Local PSI","운영 자율성","재고","수요"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0006",
+      "text": "Local PSI는 목표 PSI 및 계획 PSI를 법인별로 Off-Line 관리하며, 목표재고와 목표판매량의 구분이 지연할당 시에 이루어지지 않습니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Local PSI","Off-Line 관리","지연할당"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0007",
+      "text": "Global PSI는 전사 차원의 Demand 우선 순위에 따라 생산량(P)과 판매 가능량(S)을 자동 산출합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Global PSI","Demand 우선 순위","생산량","판매 가능량"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0008",
+      "text": "Global PSI는 LGE Out Demand 및 각 법인의 목표 재고를 직접 반영하여 전사 차원의 Max P를 생성합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Global PSI","LGE Out Demand","Max P"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee0009",
+      "text": "Global PSI는 제약에 의한 물동 계획량을 기준으로 PSI Report를 제공하며, 전 법인의 목표 PSI 및 계획 PSI에 대한 Visibility를 확보합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Global PSI","제약","PSI Report","Visibility"]
+    },
+    {
+      "id": "psi_manual_aaa11111-bbb1-4ccc-ddd1-eeeeeeee000a",
+      "text": "Global PSI는 전 법인의 목표 판매량(S) 충족 후 목표 재고량(I)을 충족시키는 순서로 계획을 수립합니다.",
+      "slide_index": 1,
+      "source": "manual_insight",
+      "keywords": ["Global PSI","판매량","재고량"]
+    }
+  ]
+  

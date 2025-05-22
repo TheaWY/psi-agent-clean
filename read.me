@@ -1,0 +1,29 @@
+psi_agent_system_gpt_only_final_complete/
+├── app.py                          ← Streamlit 프론트 UI (메인 엔트리)
+├── .env.example                    ← OPENAI_API_KEY 등 환경변수 템플릿
+├── requirements.txt                ← 설치 패키지 목록
+│
+├── agents/                         ← 각 역할별 에이전트 정의
+│   ├── __init__.py
+│   ├── supervisor_agent.py         ← 전체 흐름 조율 + 라우팅
+│   ├── image_description_agent.py  ← Excel 구조 요약 및 RAG 분류
+│   ├── psi_analysis_agent.py       ← GPT 기반 PSI 분석
+│   ├── psi_upstream_agent.py       ← GPT 기반 원인 추적
+│   ├── query_agent.py              ← GPT 기반 질의 → Dummy DB 대응
+│   └── term_agent.py               ← 용어 정의 응답 (RAG 연결 가능)
+│
+├── utils/
+│   └── retrieve_from_terms.py      ← faiss 기반 용어 정의 검색 유틸
+│
+├── data/
+│   ├── manual_vector_db/
+│   │   ├── term_index.faiss        ← FAISS 벡터 인덱스
+│   │   └── term_metadata.pkl       ← term 정의 텍스트 리스트
+│   └── dummy_query_db.json         ← (선택) Query Agent용 임시 DB
+│
+├── all-MiniLM-L6-v2/               ← ✅ 로컬 sentence-transformer 모델 (PyTorch 모델)
+│   ├── config.json
+│   ├── pytorch_model.bin
+│   ├── tokenizer.json
+│   ├── vocab.txt
+│   └── ...

@@ -1,0 +1,42 @@
+[
+  {
+    "format_id": "sales_psi_v1",
+    "title": "Sales PSI Sheet",
+    "key_columns": ["Category", "2025-05-05 (W19)", "2025-05-12 (W20)"],
+    "required_keywords": ["Sales Forecast", "Main SP", "Max SR", "Plan Shortage", "BOH"],
+    "sheet_name_keywords": ["Sales PSI"],
+    "confidence": 0.95
+  },
+  {
+    "format_id": "item_bod_v1",
+    "title": "Item BOD Sheet",
+    "key_columns": ["Mapping Model.", "Ship-WH L/T (W)", "Effective Date"],
+    "required_keywords": ["Manual Start", "Frozen"],
+    "sheet_name_keywords": ["BOD", "Item BOD"],
+    "confidence": 0.9
+  },
+  {
+    "format_id": "safety_stock_v1",
+    "title": "Safety Stock Sheet",
+    "key_columns": ["Category", "Safety Stock"],
+    "required_keywords": ["Mapping Model.", "Safety"],
+    "sheet_name_keywords": ["안전재고", "Safety Stock"],
+    "confidence": 0.88
+  },
+  {
+    "format_id": "control_panel_v1",
+    "title": "Control Panel Constraint Sheet",
+    "key_columns": ["New Frozen Constraint", "Category", "Start"],
+    "required_keywords": ["Frozen", "New"],
+    "sheet_name_keywords": ["Control Panel"],
+    "confidence": 0.9
+  },
+  {
+    "format_id": "master_cp_v1",
+    "title": "Master Control Panel",
+    "key_columns": ["Division", "Plan Parameters", "Delayed Allocation"],
+    "required_keywords": ["Build Ahead", "Partial Week"],
+    "sheet_name_keywords": ["Master Control Panel"],
+    "confidence": 0.85
+  }
+]
