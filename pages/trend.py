@@ -11,7 +11,7 @@ def run_trend_page(filtered_df: pd.DataFrame, log):
     st.write("분석할 행(주차)을 하나 선택한 뒤, 아래 🖥️ ‘분석 실행’ 버튼을 눌러주세요.")
     st.info("▶️ 체크박스로 한 개의 행을 선택해주세요.")
 
-    # AgGrid 설정
+    # 1) AgGrid 설정
     gb = GridOptionsBuilder.from_dataframe(filtered_df)
     gb.configure_default_column(filter=True, sortable=True, resizable=True, flex=1, minWidth=80)
     gb.configure_selection(selection_mode="single", use_checkbox=True)
@@ -25,36 +25,34 @@ def run_trend_page(filtered_df: pd.DataFrame, log):
         theme="streamlit"
     )
 
-    # 선택된 로우 추출 및 리스트 변환 (DataFrame 또는 list 모두 처리)
-    raw = grid_resp.get("selected_rows", None)
+    # 2) 선택된 로우 리스트 변환
+    raw = grid_resp.get("selected_rows", [])
     if isinstance(raw, pd.DataFrame):
         records = raw.to_dict("records")
-    elif isinstance(raw, list):
-        records = raw
     else:
-        records = []
-    # 선택 유무 확인
-    if len(records) == 0:
+        records = raw
+    if not records:
         return
 
-    # 분석 실행 트리거
+    # 3) 분석 실행 버튼
     if not st.button("🖥️ 분석 실행"):
         return
 
     row = records[0]
     log("📈 트렌드 분석 시작")
 
-    # 주차 컬럼 추출 및 정렬
+    # 4) 주차 컬럼 추출 및 정렬
     week_cols = sorted(
         [c for c in filtered_df.columns if re.search(r"\(W\d+\)", c)],
         key=lambda c: int(re.search(r"\(W(\d+)\)", c).group(1))
     )
 
-    # 값 및 변동률 계산
+    # 5) 값 추출 및 변동률 계산
     data = {}
     for col in week_cols:
         try:
-            num = float(row.get(col, 0) or 0)
+            val = row.get(col, 0)
+            num = float(val) if val not in (None, "", "None") else 0.0
         except:
             num = 0.0
         week = int(re.search(r"\(W(\d+)\)", col).group(1))
@@ -69,16 +67,15 @@ def run_trend_page(filtered_df: pd.DataFrame, log):
         st.warning("⚠️ 변동률을 계산할 데이터가 충분하지 않습니다.")
         return
 
-    # 평균 표시 및 표, 차트 렌더링
-    col1, col2 = st.columns([1, 1])
+    # 6) 결과 렌더링 (평균, 표, 그래프)
+    col1, col2 = st.columns([1,1])
     with col1:
         st.markdown(f"**평균:** {avg_val:.2f}")
-        st.markdown("**주차별 변동률 (%)**")
         pct_df = pd.DataFrame({"Week": valid.index.astype(str), "Change %": valid.values}).set_index("Week")
+        st.markdown("**주차별 변동률 (%)**")
         st.dataframe(pct_df, use_container_width=True)
-
     with col2:
-        fig, ax = plt.subplots(figsize=(6, 3))
+        fig, ax = plt.subplots(figsize=(6,3))
         ax.plot(valid.index.astype(str), valid.values, marker="o", markersize=6, linewidth=2)
         ax.set_xlabel("Week", fontsize=12)
         ax.set_ylabel("Change %", fontsize=12)
@@ -93,7 +90,7 @@ def run_trend_page(filtered_df: pd.DataFrame, log):
 
     log("📈 트렌드 분석 완료")
 
-    # 자동 코멘트
+    # 7) 자동 코멘트
     most_drop = valid.idxmin()
     drop_val = valid.loc[most_drop]
     st.markdown(f"> **가장 큰 변동:** Week {most_drop}에 {drop_val:.1f}%로 급격히 변화했습니다.")
