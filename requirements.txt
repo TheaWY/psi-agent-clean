@@ -1,0 +1,7 @@
+streamlit==1.45.1
+python-dotenv
+pandas
+numpy
+matplotlib
+st-aggrid
+openai
