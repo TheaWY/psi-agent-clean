@@ -35,6 +35,44 @@ def run_planning_page(suffix_inputs: dict, filtered_df: pd.DataFrame, log):
     # 2) Max SR vs Main SP
     if 'max sr' in q and 'main sp' in q:
         log("Planning Agent: Max SR vs Main SP 흐름 선택")
+
+        # ▶ PSI 필터링 Preview
+        df_preview = filtered_df[
+            filtered_df.get('Category', '').isin(
+                ['SP [R+F]', 'Max Shipping Request[R+F]']
+            )
+        ]
+        st.subheader("📂 PSI 필터링 Preview")
+        # 주차 컬럼 식별
+        week26 = [c for c in df_preview.columns if '2025-05-26' in c]
+        week12 = [c for c in df_preview.columns if '2025-05-12' in c]
+        # 포맷 함수: 정수 플로트는 정수로, 그 외는 원본
+        def fmt(x):
+            return int(x) if isinstance(x, float) and x.is_integer() else x
+        # 스타일 적용
+        styled_preview = (
+            df_preview
+            .style
+            .format(fmt)
+            # 5/26 컬럼 전부 강조
+            .applymap(
+                lambda _: 'background-color: #FFE88F',
+                subset=week26
+            )
+            # 5/12 컬럼은 Category=="Max Shipping Request[R+F]"인 행만 강조
+            .apply(
+                lambda row: [
+                    'background-color: #FFE88F'
+                    if (col in week12 and row.get('Category')=='Max Shipping Request[R+F]')
+                    else ''
+                    for col in row.index
+                ],
+                axis=1
+            )
+        )
+        st.write(styled_preview, use_container_width=True)
+
+
         reply(
             """
 📊 **분석 결과:**
@@ -68,7 +106,11 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
                     return int(x) if isinstance(x, float) and x.is_integer() else x
 
                 # 강조할 컬럼 찾기
-                highlight_cols = [c for c in sel_bod.columns if 'ship' in c.lower()]
+                highlight_cols = [
+                    col for col in sel_bod.columns
+                    if any(k in col.lower() for k in
+                           ['ship', 'effective', 'manual start', 'mp based'])
+                ]
 
                 styled_bod = (
                     sel_bod
@@ -141,7 +183,11 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
                     return int(x) if isinstance(x, float) and x.is_integer() else x
 
                 # 강조할 컬럼 찾기
-                highlight_cols = [c for c in sel_bod.columns if 'ship' in c.lower()]
+                highlight_cols = [
+                    col for col in sel_bod.columns
+                    if any(k in col.lower() for k in
+                           ['ship', 'effective', 'manual start', 'mp based'])
+                ]
 
                 styled_bod = (
                     sel_bod
