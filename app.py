@@ -4,6 +4,10 @@ import time
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
+from streamlit.components.v1 import html
+
+
+
 
 # ── 페이지 모듈 경로 설정
 PAGES_DIR = os.path.join(os.path.dirname(__file__), "pages")
@@ -18,20 +22,60 @@ from pages.trend       import run_trend_page
 # ── 초기 설정
 load_dotenv()
 st.set_page_config(page_title="📦 PSI 분석 봇", layout="wide")
-
 # ── 전역 CSS
 st.markdown(
     """
     <style>
+      /* 사이드바 네비게이션 숨기기 */
       [data-testid="stSidebarNav"] { visibility: hidden !important; }
+
+      /* 1) 버튼 기본 스타일 — 크기, 폰트, 모서리 */
       .stButton > button {
-        font-size:1.1rem !important;
-        padding:12px 20px !important;
-        margin:4px !important;
+        width: 180px !important;
+        height: 60px !important;
+        font-size: 1.1rem !important;
+        margin: 4px !important;
+        border: 1px solid #888 !important;
+        border-radius: 8px !important;
+        color: #000 !important;
+      }
+
+      /* 2) 컬럼별 배경색 지정 */
+      /* 첫 번째 버튼: 단순 용어 문의 (하늘) */
+      [data-testid="column"]:nth-child(1) .stButton > button {
+        background-color: #B3E5FC !important;
+      }
+      [data-testid="column"]:nth-child(1) .stButton > button:hover {
+        background-color: #81D4FA !important;
+      }
+
+      /* 두 번째 버튼: 실적 분석 (연두) */
+      [data-testid="column"]:nth-child(2) .stButton > button {
+        background-color: #C8E6C9 !important;
+      }
+      [data-testid="column"]:nth-child(2) .stButton > button:hover {
+        background-color: #A5D6A7 !important;
+      }
+
+      /* 세 번째 버튼: 계획 분석 (연노랑) */
+      [data-testid="column"]:nth-child(3) .stButton > button {
+        background-color: #FFECB3 !important;
+      }
+      [data-testid="column"]:nth-child(3) .stButton > button:hover {
+        background-color: #FFE082 !important;
+      }
+
+      /* 네 번째 버튼: 트렌드 분석 (연핑크) */
+      [data-testid="column"]:nth-child(4) .stButton > button {
+        background-color: #F8BBD0 !important;
+      }
+      [data-testid="column"]:nth-child(4) .stButton > button:hover {
+        background-color: #F48FB1 !important;
       }
     </style>
     """,
     unsafe_allow_html=True,
+
 )
 # ── 업로드 디렉토리
 EXCEL_DIR  = os.path.join(os.getcwd(), "data", "uploaded_excels")
@@ -46,7 +90,7 @@ if "logs" not in st.session_state:
 # 헤더 및 세션에 저장된 모든 로그 출력
 log_container.markdown("### 🔁 처리 로그")
 for m in st.session_state.logs:
-    log_container.markdown(f"🟢 {m}")
+    log_container.markdown(f"✔️ {m}")
 
 # ── log() 함수 정의 ─────────────────────────────────────────────────
 def log(msg: str, reset: bool = False):
@@ -58,9 +102,8 @@ def log(msg: str, reset: bool = False):
         return
     # 새 메시지를 세션에도 저장하고, 한 줄만 추가로 출력
     st.session_state.logs.append(msg)
-    log_container.markdown(f"• {msg}")
+    log_container.markdown(f"✔️ {msg}")
     time.sleep(0.05)
-
 
 # ── 화면 타이틀
 st.title("📦 PSI 분석 봇")
@@ -70,7 +113,7 @@ with st.sidebar:
     uploaded = st.file_uploader("📎 Excel 파일 업로드", type="xlsx")
 
 if uploaded:
-    log("Supervisor Agent: Excel 업로드 감지", reset=True)
+    log("Supervisor Agent: Excel 업로드 감지")
     log("File Agent: 업로드 처리 시작")
     with open(EXCEL_PATH, "wb") as f:
         f.write(uploaded.getbuffer())
