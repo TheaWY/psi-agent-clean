@@ -36,42 +36,43 @@ def run_planning_page(suffix_inputs: dict, filtered_df: pd.DataFrame, log):
     if 'max sr' in q and 'main sp' in q:
         log("Planning Agent: Max SR vs Main SP 흐름 선택")
 
-        # ▶ PSI 필터링 Preview
-        df_preview = filtered_df[
-            filtered_df.get('Category', '').isin(
-                ['SP [R+F]', 'Max Shipping Request[R+F]']
-            )
-        ]
-        st.subheader("📂 PSI 필터링 Preview")
-        # 주차 컬럼 식별
-        week26 = [c for c in df_preview.columns if '2025-05-26' in c]
-        week12 = [c for c in df_preview.columns if '2025-05-12' in c]
+        # ▶ PSI Preview (모델 선택된 전체 데이터 보여주기)
+        df_preview = filtered_df.copy()
+        st.subheader("📂 PSI Preview")
+
         # 포맷 함수: 정수 플로트는 정수로, 그 외는 원본
         def fmt(x):
             return int(x) if isinstance(x, float) and x.is_integer() else x
-        # 스타일 적용
+        # ▶ PSI Preview (모델 선택된 전체 데이터 보여주기)
+        df_preview = filtered_df.copy()
+        st.subheader("📂 PSI Preview")
+
+        # 포맷 함수: 정수 플로트는 정수로, 그 외는 원본
+        def fmt(x):
+            return int(x) if isinstance(x, float) and x.is_integer() else x
+
+        # 5/26, 5/12 컬럼 찾기
+        week26_col = next((c for c in df_preview.columns if '2025-05-26' in c), None)
+        week12_col = next((c for c in df_preview.columns if '2025-05-12' in c), None)
+
         styled_preview = (
             df_preview
             .style
             .format(fmt)
-            # 5/26 컬럼 전부 강조
-            .applymap(
-                lambda _: 'background-color: #FFE88F',
-                subset=week26
-            )
-            # 5/12 컬럼은 Category=="Max Shipping Request[R+F]"인 행만 강조
             .apply(
                 lambda row: [
+                    # SP [R+F]은 5/26만, Max Shipping Request[R+F]는 5/12·5/26 모두 하이라이트
                     'background-color: #FFE88F'
-                    if (col in week12 and row.get('Category')=='Max Shipping Request[R+F]')
+                    if (row.get('Category') == 'SP [R+F]' and col == week26_col)
+                    else 'background-color: #FFE88F'
+                    if (row.get('Category') == 'Max Shipping Request[R+F]' and col in {week12_col, week26_col})
                     else ''
-                    for col in row.index
+                    for col in df_preview.columns
                 ],
                 axis=1
             )
-        )
+        )  # <-- 여기 닫는 괄호가 하나 빠져있었음
         st.write(styled_preview, use_container_width=True)
-
 
         reply(
             """
