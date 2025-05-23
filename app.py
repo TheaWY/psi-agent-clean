@@ -23,9 +23,7 @@ st.set_page_config(page_title="📦 PSI 분석 봇", layout="wide")
 st.markdown(
     """
     <style>
-      /* 사이드바 숨기기 */
       [data-testid="stSidebarNav"] { visibility: hidden !important; }
-      /* 버튼 크게, 간격 늘리기 */
       .stButton > button {
         font-size:1.1rem !important;
         padding:12px 20px !important;
@@ -35,35 +33,38 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
 # ── 업로드 디렉토리
 EXCEL_DIR  = os.path.join(os.getcwd(), "data", "uploaded_excels")
 EXCEL_PATH = os.path.join(EXCEL_DIR, "latest.xlsx")
 os.makedirs(EXCEL_DIR, exist_ok=True)
 
-# ── 로그 초기화
-def init_logs():
-    if "logs" not in st.session_state:
-        st.session_state.logs = []
-        st.sidebar.markdown("### 🔁 처리 로그")
+# ── 로그 컨테이너 생성 & 기존 로그 렌더링 ────────────────────────────
+log_container = st.sidebar.container()
+if "logs" not in st.session_state:
+    st.session_state.logs = []
 
+# 헤더 및 세션에 저장된 모든 로그 출력
+log_container.markdown("### 🔁 처리 로그")
+for m in st.session_state.logs:
+    log_container.markdown(f"🟢 {m}")
+
+# ── log() 함수 정의 ─────────────────────────────────────────────────
 def log(msg: str, reset: bool = False):
     if reset:
-        st.session_state.logs = []
-        st.sidebar.empty()
-        st.sidebar.markdown("### 🔁 처리 로그")
+        # 로그 초기화 시 세션 글만 지우고, 헤더는 남겨둡니다
+        st.session_state.logs.clear()
+    # 중복 방지
     if st.session_state.logs and st.session_state.logs[-1] == msg:
         return
+    # 새 메시지를 세션에도 저장하고, 한 줄만 추가로 출력
     st.session_state.logs.append(msg)
-    st.sidebar.markdown(f"• {msg}")
+    log_container.markdown(f"• {msg}")
     time.sleep(0.05)
 
-init_logs()
 
 # ── 화면 타이틀
 st.title("📦 PSI 분석 봇")
 st.caption("LG전자 PSI 문의 대응용 Agentic AI 시스템")
-
 # ── 1) 엑셀 업로드
 with st.sidebar:
     uploaded = st.file_uploader("📎 Excel 파일 업로드", type="xlsx")

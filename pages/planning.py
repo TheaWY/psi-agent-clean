@@ -21,8 +21,8 @@ def run_planning_page(suffix_inputs: dict, filtered_df: pd.DataFrame, log):
     with st.chat_message("user"):
         st.markdown(user_q)
     log("Supervisor Agent: Planning Agent 질문 접수")
-    log("Step 2: Supervisor Agent → Planning Agent 전달 중")
-    log("Step 3: Planning Agent: 질문 파싱 및 시나리오 선택 중")
+    log("Supervisor Agent → Planning Agent 전달 중")
+    log("Planning Agent: 질문 파싱 및 RAG에서 선택 중")
 
     def reply(txt: str):
         with st.chat_message("assistant"):
@@ -74,7 +74,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
                     sel_bod
                     .style
                     .format(fmt)
-                    .applymap(lambda _: 'background-color: yellow', subset=highlight_cols)
+                    .applymap(lambda _: 'background-color: #FFE88F', subset=highlight_cols)
                 )
                 st.write(styled_bod)
 
@@ -105,7 +105,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
                     .format(fmt)
                     .apply(
                         lambda row: [
-                            'background-color: yellow' if (row['Category']=='Changed' and col==week_col) else ''
+                            'background-color: #FFE88F' if (row['Category']=='Changed' and col==week_col) else ''
                             for col in sel_ss.columns
                         ],
                         axis=1
@@ -121,7 +121,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
 
     # 3) BOD Start Date 설명
     elif 'bod start' in q:
-        log("Planning Agent: BOD Start Date 관련...")
+        log("Planning Agent: BOD Start Date 관련 RAG에서 찾는 중")
         reply(
             "해당 모델의 Effective Date는 Start Date와 Manual Start Date중 가장 늦은 5/26으로 설정 되어있습니다。"
             "GPLM 시스템의 R&D PMS 메뉴에 등록된 개발일정이 GSCP Item BOD 페이지로 I/F되어 Item BOD의 BOD Start Date로 인식됩니다。"
@@ -147,7 +147,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
                     sel_bod
                     .style
                     .format(fmt)
-                    .applymap(lambda _: 'background-color: yellow', subset=highlight_cols)
+                    .applymap(lambda _: 'background-color: #FFE88F', subset=highlight_cols)
                 )
                 st.write(styled_bod)
 
@@ -160,7 +160,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
 
     # 4) Delay Allocation 설명
     elif 'delay' in q:
-        log("Planning Agent: Delay Allocation 관련...")
+        log("Planning Agent: Delay Allocation 관련 RAG에서 찾는 중")
         reply(
             "해당 Division은 **Delay Allocation** 로직이 **ON**으로 설정되어 있습니다。"
             "공급 계획이 지연 수립되어 Shortage 처리가 되지 않고、다음 Sales Allocation에 할당되는 기능입니다。"
@@ -184,7 +184,7 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
                     sel_cp
                     .style
                     .format(fmt)
-                    .applymap(lambda _: 'background-color: yellow', subset=highlight_cols)
+                    .applymap(lambda _: 'background-color: #FFE88F', subset=highlight_cols)
                 )
                 st.write(styled_cp)
             else:
