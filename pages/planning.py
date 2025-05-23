@@ -38,7 +38,6 @@ def run_planning_page(suffix_inputs: dict, filtered_df: pd.DataFrame, log):
 
         # ▶ PSI Preview (모델 선택된 전체 데이터 보여주기)
         df_preview = filtered_df.copy()
-        st.subheader("📂 PSI Preview")
 
         # 포맷 함수: 정수 플로트는 정수로, 그 외는 원본
         def fmt(x):
