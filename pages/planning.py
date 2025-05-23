@@ -41,12 +41,12 @@ def run_planning_page(suffix_inputs: dict, filtered_df: pd.DataFrame, log):
 
 1. **Max SR 수립 기준**
    - Max SR은 BOD 기준 Lead Time (4주)과 안전재고 기준 (1주)을 합쳐 수립되었습니다.
-   - 이로 인해 **5주**의 offset이 발생합니다.
+   - 이로 인해 **5주**의 offset이 발생합니다。
 
 2. **Main SP 수립 기준**  
-   - Main SP는 자재 제약·CAPA제약·BOD 기준정보를 반영한 선적 계획입니다.
-   - BOD Start Date는 **2025-05-01**로 설정되어, 이후 제약을 반영해 **5/26주차**에 일괄 수립됩니다. 
-   - 앞서 수립된 **2025-05-01 수량:1150 + 2025-05-26 수량:200**을 2025-05-26주차에 합산하여 수량:1350이 수립됩니다. 
+   - Main SP는 자재 제약·CAPA제약·BOD 기준정보를 반영한 선적 계획입니다。
+   - BOD Start Date는 **2025-05-01**로 설정되어, 이후 제약을 반영해 **5/26주차**에 일괄 수립됩니다。
+   - 앞서 수립된 **2025-05-01 수량:1150 + 2025-05-26 수량:200**을 2025-05-26주차에 합산하여 수량:1350이 수립됩니다。
 
 ✅ **결론 요약:**
 Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 실행 계획이므로
@@ -60,8 +60,27 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
             df_bod = pd.read_excel(BOD_FILE)
             key_col = next((c for c in df_bod.columns if 'suffix' in c.lower()), None)
             sel_bod = df_bod[df_bod[key_col].astype(str).str.strip() == suffix] if key_col else pd.DataFrame()
+
             st.subheader("📂 Item_BOD 시트 (해당 모델)")
-            st.dataframe(sel_bod, use_container_width=True)
+            if not sel_bod.empty:
+                # 포맷 함수: 정수 플로트는 정수로, 그 외는 원본
+                def fmt(x):
+                    return int(x) if isinstance(x, float) and x.is_integer() else x
+
+                # 강조할 컬럼 찾기
+                highlight_cols = [c for c in sel_bod.columns if 'ship' in c.lower()]
+
+                styled_bod = (
+                    sel_bod
+                    .style
+                    .format(fmt)
+                    .applymap(lambda _: 'background-color: yellow', subset=highlight_cols)
+                )
+                st.write(styled_bod)
+
+            else:
+                st.dataframe(sel_bod, use_container_width=True)
+
         except Exception as e:
             st.error(f"Item_BOD 파일 로드 오류: {e}")
 
@@ -70,8 +89,33 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
             df_ss = pd.read_excel(SS_FILE)
             suffix_col = next((c for c in df_ss.columns if 'suffix' in c.lower()), None)
             sel_ss = df_ss[df_ss[suffix_col].astype(str).str.strip() == suffix] if suffix_col else pd.DataFrame()
+
             st.subheader("📂 Safety_Stock 시트 (해당 모델)")
-            st.dataframe(sel_ss, use_container_width=True)
+            if not sel_ss.empty and 'Category' in sel_ss.columns:
+                # 포맷 함수
+                def fmt(x):
+                    return int(x) if isinstance(x, float) and x.is_integer() else x
+
+                # 강조할 5/26주차 컬럼 찾기
+                week_col = next((c for c in sel_ss.columns if '2025-05-26' in c), None)
+
+                styled_ss = (
+                    sel_ss
+                    .style
+                    .format(fmt)
+                    .apply(
+                        lambda row: [
+                            'background-color: yellow' if (row['Category']=='Changed' and col==week_col) else ''
+                            for col in sel_ss.columns
+                        ],
+                        axis=1
+                    )
+                )
+                st.write(styled_ss)
+
+            else:
+                st.dataframe(sel_ss, use_container_width=True)
+
         except Exception as e:
             st.error(f"Safety_Stock 파일 로드 오류: {e}")
 
@@ -79,10 +123,40 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
     elif 'bod start' in q:
         log("Planning Agent: BOD Start Date 관련...")
         reply(
-            "해당 모델의 Effective Date는 Start Date와 Manual Start Date중 가장 늦은 5/26으로 설정 되어있습니다."
+            "해당 모델의 Effective Date는 Start Date와 Manual Start Date중 가장 늦은 5/26으로 설정 되어있습니다。"
             "GPLM 시스템의 R&D PMS 메뉴에 등록된 개발일정이 GSCP Item BOD 페이지로 I/F되어 Item BOD의 BOD Start Date로 인식됩니다。"
         )
         log("Planning Agent: BOD Start Date 설명 완료")
+
+                # ▶ Item_BOD 시트 로드 & 필터
+        try:
+            df_bod = pd.read_excel(BOD_FILE)
+            key_col = next((c for c in df_bod.columns if 'suffix' in c.lower()), None)
+            sel_bod = df_bod[df_bod[key_col].astype(str).str.strip() == suffix] if key_col else pd.DataFrame()
+
+            st.subheader("📂 Item_BOD 시트 (해당 모델)")
+            if not sel_bod.empty:
+                # 포맷 함수: 정수 플로트는 정수로, 그 외는 원본
+                def fmt(x):
+                    return int(x) if isinstance(x, float) and x.is_integer() else x
+
+                # 강조할 컬럼 찾기
+                highlight_cols = [c for c in sel_bod.columns if 'ship' in c.lower()]
+
+                styled_bod = (
+                    sel_bod
+                    .style
+                    .format(fmt)
+                    .applymap(lambda _: 'background-color: yellow', subset=highlight_cols)
+                )
+                st.write(styled_bod)
+
+            else:
+                st.dataframe(sel_bod, use_container_width=True)
+
+        except Exception as e:
+            st.error(f"Item_BOD 파일 로드 오류: {e}")
+
 
     # 4) Delay Allocation 설명
     elif 'delay' in q:
@@ -98,8 +172,24 @@ Max SR은 이론적 수요 기반 수립, Main SP는 현실 제약을 반영한 
             df_cp = pd.read_excel(CP_FILE)
             div_col = next((c for c in df_cp.columns if c.lower().startswith('division')), None)
             sel_cp = df_cp[df_cp[div_col].astype(str).str.strip() == division] if div_col else pd.DataFrame()
+
             st.subheader("📂 Control_Panel 시트 (해당 Division)")
-            st.dataframe(sel_cp, use_container_width=True)
+            if not sel_cp.empty:
+                def fmt(x):
+                    return int(x) if isinstance(x, float) and x.is_integer() else x
+
+                highlight_cols = [c for c in sel_cp.columns if 'delay' in c.lower() and 'alloc' in c.lower()]
+
+                styled_cp = (
+                    sel_cp
+                    .style
+                    .format(fmt)
+                    .applymap(lambda _: 'background-color: yellow', subset=highlight_cols)
+                )
+                st.write(styled_cp)
+            else:
+                st.dataframe(sel_cp, use_container_width=True)
+
         except Exception as e:
             st.error(f"Control_Panel 파일 로드 오류: {e}")
 
